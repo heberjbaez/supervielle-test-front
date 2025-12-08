@@ -1,0 +1,49 @@
+<div class="login-container">
+  <div class="login-card">
+    <h1>Iniciar Sesión</h1>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          placeholder="ejemplo@correo.com"
+        />
+        @if (loginForm.controls.email.touched && loginForm.controls.email.errors) {
+          <span class="error">
+            @if (loginForm.controls.email.errors['required']) {
+              El email es requerido
+            } @else if (loginForm.controls.email.errors['email']) {
+              Formato de email inválido
+            }
+          </span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input
+          type="password"
+          id="password"
+          formControlName="password"
+          placeholder="Mínimo 6 caracteres"
+        />
+        @if (loginForm.controls.password.touched && loginForm.controls.password.errors) {
+          <span class="error">
+            @if (loginForm.controls.password.errors['required']) {
+              La contraseña es requerida
+            } @else if (loginForm.controls.password.errors['minlength']) {
+              La contraseña debe tener al menos 6 caracteres
+            }
+          </span>
+        }
+      </div>
+
+      <button type="submit" [disabled]="loginForm.invalid">
+        Iniciar Sesión
+      </button>
+    </form>
+  </div>
+</div>
