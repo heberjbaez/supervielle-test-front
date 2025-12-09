@@ -1,5 +1,47 @@
 <div>
-  <h1>Listado</h1>
-  <p>Bienvenido, has iniciado sesión correctamente.</p>
-  <button (click)="logout()">Cerrar Sesión</button>
+  <header>
+    <h1>Listado de Usuarios</h1>
+    <button (click)="logout()">Cerrar Sesión</button>
+  </header>
+
+  @if (loading()) {
+    <p>Cargando usuarios...</p>
+  } @else if (error()) {
+    <p>Error: {{ error() }}</p>
+  } @else {
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Compañía</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (user of paginatedUsers(); track user.id) {
+            <tr>
+              <td>{{ user.username }}</td>
+              <td>{{ user.name }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.company.name }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+
+      <div>
+        <button (click)="previousPage()" [disabled]="currentPage() === 1">
+          Anterior
+        </button>
+
+        <span>Página {{ currentPage() }} de {{ totalPages() }}</span>
+
+        <button (click)="nextPage()" [disabled]="currentPage() === totalPages()">
+          Siguiente
+        </button>
+      </div>
+    </div>
+  }
 </div>

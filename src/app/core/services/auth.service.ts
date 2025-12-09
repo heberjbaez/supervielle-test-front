@@ -13,7 +13,7 @@ export class AuthService {
 
   login(): void {
     this.isAuthenticated.set(true);
-    this.router.navigate(['/listado']);
+    this.router.navigate(['/users']);
   }
 
   logout(): void {
