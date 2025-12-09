@@ -1,0 +1,76 @@
+<div class="sidebar-content">
+  @if (user()) {
+    <div class="sidebar-header">
+      <h2>Detalles del Usuario</h2>
+      <button mat-icon-button (click)="onClose()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+
+    <section class="user-info">
+      <h3>{{ user()!.name }}</h3>
+      <p class="username">@{{ user()!.username }}</p>
+
+      <mat-divider></mat-divider>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <strong>Email:</strong>
+          <span>{{ user()!.email }}</span>
+        </div>
+
+        <div class="info-item">
+          <strong>Teléfono:</strong>
+          <span>{{ user()!.phone }}</span>
+        </div>
+
+        <div class="info-item">
+          <strong>Ciudad:</strong>
+          <span>{{ user()!.address.city }}</span>
+        </div>
+
+        <div class="info-item">
+          <strong>Código Postal:</strong>
+          <span>{{ user()!.address.zipcode }}</span>
+        </div>
+
+        <div class="info-item">
+          <strong>Compañía:</strong>
+          <span>{{ user()!.company.name }}</span>
+        </div>
+
+        <div class="info-item">
+          <strong>Website:</strong>
+          <a [href]="'https://' + user()!.website" target="_blank">
+            {{ user()!.website }}
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <mat-divider></mat-divider>
+
+    <section class="user-posts">
+      <h3>Últimas 5 publicaciones</h3>
+
+      @if (loading()) {
+        <div class="loading-container">
+          <mat-spinner diameter="40"></mat-spinner>
+        </div>
+      } @else if (userPosts().length === 0) {
+        <p>No hay publicaciones disponibles</p>
+      } @else {
+        <div class="posts-list">
+          @for (post of userPosts(); track post.id) {
+            <mat-card class="post-card">
+              <mat-card-content>
+                <h4>{{ post.title }}</h4>
+                <p>{{ post.body }}</p>
+              </mat-card-content>
+            </mat-card>
+          }
+        </div>
+      }
+    </section>
+  }
+</div>

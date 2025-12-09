@@ -1,16 +1,46 @@
 import { Component, computed, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { AuthService } from '../../core/services/auth.service';
 import { UsersService } from '../../core/services/users.service';
+import { User } from '../../core/models';
+import { UserSidebarComponent } from './components/user-sidebar/user-sidebar.component';
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatTableModule,
+    MatProgressSpinnerModule,
+    MatChipsModule,
+    MatPaginatorModule,
+    MatSidenavModule,
+    UserSidebarComponent
+  ],
   templateUrl: './users.component.html',
+  styleUrl: './users.component.scss'
 })
 export class UsersComponent implements OnInit {
+  displayedColumns: string[] = ['username', 'name', 'email', 'company'];
   private authService = inject(AuthService);
   private usersService = inject(UsersService);
 
@@ -23,6 +53,7 @@ export class UsersComponent implements OnInit {
 
   searchText = signal('');
   selectedCompany = signal('');
+  selectedUser = signal<User | null>(null);
 
   currentPage = this.currentPageSignal.asReadonly();
 
@@ -95,6 +126,14 @@ export class UsersComponent implements OnInit {
     if (page >= 1 && page <= this.totalPages()) {
       this.currentPageSignal.set(page);
     }
+  }
+
+  openUserSidebar(user: User): void {
+    this.selectedUser.set(user);
+  }
+
+  closeSidebar(): void {
+    this.selectedUser.set(null);
   }
 
   logout(): void {
