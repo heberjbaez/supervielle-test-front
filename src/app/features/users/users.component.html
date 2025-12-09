@@ -10,6 +10,39 @@
     <p>Error: {{ error() }}</p>
   } @else {
     <div>
+      <div class="filters">
+        <div>
+          <label for="search">Buscar por nombre o email:</label>
+          <input
+            id="search"
+            type="text"
+            [ngModel]="searchText()"
+            (ngModelChange)="onSearchChange($event)"
+            placeholder="Buscar..."
+          />
+        </div>
+
+        <div>
+          <label for="company">Filtrar por compañía:</label>
+          <select
+            id="company"
+            [ngModel]="selectedCompany()"
+            (ngModelChange)="onCompanyChange($event)"
+          >
+            <option value="">Todas las compañías</option>
+            @for (company of companies(); track company) {
+              <option [value]="company">{{ company }}</option>
+            }
+          </select>
+        </div>
+
+        <button (click)="clearFilters()">Limpiar filtros</button>
+      </div>
+
+      <div>
+        <p>Mostrando {{ filteredUsers().length }} usuarios</p>
+      </div>
+
       <table>
         <thead>
           <tr>
@@ -20,18 +53,24 @@
           </tr>
         </thead>
         <tbody>
-          @for (user of paginatedUsers(); track user.id) {
+          @if (paginatedUsers().length === 0) {
             <tr>
-              <td>{{ user.username }}</td>
-              <td>{{ user.name }}</td>
-              <td>{{ user.email }}</td>
-              <td>{{ user.company.name }}</td>
+              <td colspan="4">No se encontraron usuarios</td>
             </tr>
+          } @else {
+            @for (user of paginatedUsers(); track user.id) {
+              <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.company.name }}</td>
+              </tr>
+            }
           }
         </tbody>
       </table>
 
-      <div>
+      <div class="pagination">
         <button (click)="previousPage()" [disabled]="currentPage() === 1">
           Anterior
         </button>
