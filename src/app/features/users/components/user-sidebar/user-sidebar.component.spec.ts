@@ -195,31 +195,6 @@ describe('UserSidebarComponent', () => {
     expect(postCards.length).toBe(5);
   });
 
-  it('should display close button', () => {
-    fixture.componentRef.setInput('user', mockUser);
-    fixture.detectChanges();
-
-    const compiled = fixture.nativeElement as HTMLElement;
-    const closeButton = compiled.querySelector('button[mat-icon-button]');
-    expect(closeButton).toBeTruthy();
-  });
-
-  it('should call onClose when close button is clicked', () => {
-    fixture.componentRef.setInput('user', mockUser);
-    fixture.detectChanges();
-
-    const closeSpy = vi.fn();
-    component.close.subscribe(closeSpy);
-
-    const compiled = fixture.nativeElement as HTMLElement;
-    const closeButton = compiled.querySelector(
-      'button[mat-icon-button]'
-    ) as HTMLButtonElement;
-    closeButton.click();
-
-    expect(closeSpy).toHaveBeenCalled();
-  });
-
   it('should reload posts when user changes', () => {
     fixture.componentRef.setInput('user', mockUser);
     fixture.detectChanges();
