@@ -192,16 +192,10 @@ npm start
 - **Estrategia de commits**: Commits incrementales por funcionalidad implementada
 - **Merge final**: Al completar todas las funcionalidades, merge de `desa` a `master`
 
-## Desarrollo Futuro
+## Comentarios y/o mejoras
 
-Posibles mejoras y extensiones:
-
-- Implementación de tests end-to-end
-- Caché de datos para optimizar llamadas a la API
-- Modo offline con Service Workers
-- Filtros adicionales (por ciudad, teléfono, etc.)
-- Exportación de datos a CSV/Excel
-- Internacionalización (i18n)
+- Se pudo haber mejorado la UI pero por cuestiones de tiempo decidi priorizar funcionalidad y dejar los componentes acomodados
+- Habia compoenentes de Angular Material que no se renderizaban correctamente como por ejemplo el boton de "Iniciar Sesion", que si bien esta deshabilitado hasta que el usuario no ingrese correctamente los campos, esto no se refleja visualmente de manera correcta.
 
 ## Recursos Adicionales
 
@@ -209,8 +203,3 @@ Posibles mejoras y extensiones:
 - [Angular Material Components](https://material.angular.io/)
 - [JSONPlaceholder API](https://jsonplaceholder.typicode.com/)
 - [RxJS Documentation](https://rxjs.dev/)
-
-## Comentarios y/o mejoras
-
-- Se pudo haber mejorado la UI pero por cuestiones de tiempo decidi priorizar funcionalidad y dejar los componentes acomodados
-- Habia compoenentes de Angular Material que no se renderizaban correctamente como por ejemplo el boton de "Iniciar Sesion", que si bien esta deshabilitado hasta que el usuario no ingrese correctamente los campos, esto no se refleja visualmente de manera correcta.
