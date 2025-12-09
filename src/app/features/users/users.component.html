@@ -1,129 +1,104 @@
 <mat-drawer-container class="users-container" [hasBackdrop]="true">
-  <mat-drawer
-    mode="over"
-    position="start"
-    [opened]="!!selectedUser()"
-    (closed)="closeSidebar()">
-    <app-user-sidebar
-      [user]="selectedUser()"
-      (close)="closeSidebar()"
-    />
+  <mat-drawer mode="over" position="start" [opened]="!!selectedUser()" (closed)="closeSidebar()">
+    <app-user-sidebar [user]="selectedUser()" (close)="closeSidebar()" />
   </mat-drawer>
 
   <mat-drawer-content>
     <mat-toolbar color="primary">
-      <span class="spacer" ></span>
-      <button mat-icon-button (click)="logout()">
-       logout
-      </button>
+      <span class="spacer"></span>
+      <button mat-button="outlined" class="logout" (click)="logout()">Logout</button>
     </mat-toolbar>
 
     <div class="content-wrapper">
       @if (loading()) {
-        <div class="loading-container">
-          <mat-spinner></mat-spinner>
-        </div>
+      <div class="loading-container">
+        <mat-spinner></mat-spinner>
+      </div>
       } @else if (error()) {
-        <div class="error-container">
-          <mat-icon style="font-size: 48px; height: 48px; width: 48px;">error</mat-icon>
-          <p>Error: {{ error() }}</p>
-        </div>
+      <div class="error-container">
+        <mat-icon style="font-size: 48px; height: 48px; width: 48px">error</mat-icon>
+        <p>Error: {{ error() }}</p>
+      </div>
       } @else {
-        <div class="filters-section">
-          <div class="filters-grid">
-            <mat-form-field appearance="outline" class="filter-field">
-              <mat-label>Buscar por nombre o email</mat-label>
-              <input
-                matInput
-                [ngModel]="searchText()"
-                (ngModelChange)="onSearchChange($event)"
-                placeholder="Buscar..."
-              />
+      <div class="filters-section">
+        <div class="filters-grid">
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Buscar por nombre o email</mat-label>
+            <input
+              matInput
+              [ngModel]="searchText()"
+              (ngModelChange)="onSearchChange($event)"
+              placeholder="Buscar..."
+            />
+          </mat-form-field>
 
-            </mat-form-field>
+          <mat-form-field appearance="outline" class="filter-field">
+            <mat-label>Filtrar por compañía</mat-label>
+            <mat-select [ngModel]="selectedCompany()" (ngModelChange)="onCompanyChange($event)">
+              <mat-option value="">Todas las compañías</mat-option>
+              @for (company of companies(); track company) {
+              <mat-option [value]="company">{{ company }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
 
-            <mat-form-field appearance="outline" class="filter-field">
-              <mat-label>Filtrar por compañía</mat-label>
-              <mat-select
-                [ngModel]="selectedCompany()"
-                (ngModelChange)="onCompanyChange($event)">
-                <mat-option value="">Todas las compañías</mat-option>
-                @for (company of companies(); track company) {
-                  <mat-option [value]="company">{{ company }}</mat-option>
-                }
-              </mat-select>
-
-            </mat-form-field>
-
-            <button mat-raised-button (click)="clearFilters()">
-
-              Limpiar
-            </button>
-          </div>
-
-          <div class="results-info">
-            <mat-chip-set>
-              <mat-chip>{{ filteredUsers().length }} usuarios encontrados</mat-chip>
-            </mat-chip-set>
-          </div>
+          <button mat-raised-button (click)="clearFilters()">Limpiar</button>
         </div>
 
-        <div class="table-container">
-          <table mat-table [dataSource]="paginatedUsers()">
-            <ng-container matColumnDef="username">
-              <th mat-header-cell *matHeaderCellDef>Username</th>
-              <td mat-cell *matCellDef="let user">{{ user.username }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="name">
-              <th mat-header-cell *matHeaderCellDef>Nombre</th>
-              <td mat-cell *matCellDef="let user">{{ user.name }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="email">
-              <th mat-header-cell *matHeaderCellDef>Email</th>
-              <td mat-cell *matCellDef="let user">{{ user.email }}</td>
-            </ng-container>
-
-            <ng-container matColumnDef="company">
-              <th mat-header-cell *matHeaderCellDef>Compañía</th>
-              <td mat-cell *matCellDef="let user">{{ user.company.name }}</td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-            <tr
-              mat-row
-              *matRowDef="let user; columns: displayedColumns;"
-              (click)="openUserSidebar(user)"
-              class="user-row">
-            </tr>
-          </table>
-
-          @if (paginatedUsers().length === 0) {
-            <div style="text-align: center; padding: 48px; color: rgba(0,0,0,0.6);">
-              <mat-icon style="font-size: 48px; height: 48px; width: 48px;">info</mat-icon>
-              <p>No se encontraron usuarios</p>
-            </div>
-          }
+        <div class="results-info">
+          <mat-chip-set>
+            <mat-chip>{{ filteredUsers().length }} usuarios encontrados</mat-chip>
+          </mat-chip-set>
         </div>
+      </div>
 
-        <div class="pagination-controls">
-          <button
-            mat-icon-button
-            (click)="previousPage()"
-            [disabled]="currentPage() === 1">
-          <
-          </button>
+      <div class="table-container">
+        <table mat-table [dataSource]="paginatedUsers()">
+          <ng-container matColumnDef="username">
+            <th mat-header-cell *matHeaderCellDef>Username</th>
+            <td mat-cell *matCellDef="let user">{{ user.username }}</td>
+          </ng-container>
 
-          <span>Página {{ currentPage() }} de {{ totalPages() }}</span>
+          <ng-container matColumnDef="name">
+            <th mat-header-cell *matHeaderCellDef>Nombre</th>
+            <td mat-cell *matCellDef="let user">{{ user.name }}</td>
+          </ng-container>
 
-          <button
-            mat-icon-button
-            (click)="nextPage()"
-            [disabled]="currentPage() === totalPages()">
-        >
-          </button>
+          <ng-container matColumnDef="email">
+            <th mat-header-cell *matHeaderCellDef>Email</th>
+            <td mat-cell *matCellDef="let user">{{ user.email }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="company">
+            <th mat-header-cell *matHeaderCellDef>Compañía</th>
+            <td mat-cell *matCellDef="let user">{{ user.company.name }}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr
+            mat-row
+            *matRowDef="let user; columns: displayedColumns"
+            (click)="openUserSidebar(user)"
+            class="user-row"
+          ></tr>
+        </table>
+
+        @if (paginatedUsers().length === 0) {
+        <div class="no-results">
+          <p>No se encontraron usuarios</p>
         </div>
+        }
+      </div>
+
+      <div class="pagination-controls">
+        <button mat-icon-button (click)="previousPage()" [disabled]="currentPage() === 1"><</button>
+
+        <span>Página {{ currentPage() }} de {{ totalPages() }}</span>
+
+        <button mat-icon-button (click)="nextPage()" [disabled]="currentPage() === totalPages()">
+          >
+        </button>
+      </div>
       }
     </div>
   </mat-drawer-content>
